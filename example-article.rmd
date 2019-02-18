@@ -1,0 +1,62 @@
+---
+title: "How to include DiagrammeR grViz code as vector graphics in PDF's"
+author: "Peter M. Dahlgren"
+date: \today
+output:
+  pdf_document: 
+    toc: no
+    fig_caption: yes
+    number_sections: no
+link-citations: true
+colorlinks: true
+urlcolor: blue
+keywords: "diagrams, RMarkdown"
+abstract: 
+  This document contain example code for creating `grViz()` diagrams and include
+  them as vector graphics in PDF files.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+
+library(magrittr)
+
+# Convert grViz code to PDF and include it in the RMarkdown document.
+create_pdf_diagram <- function(filename, code, dpi=NULL){
+  utils::capture.output({
+    DiagrammeR::grViz(code) %>%
+    DiagrammeRsvg::export_svg() %>%
+    base::charToRaw() %>% 
+    rsvg::rsvg_pdf(filename)
+  }, file="NUL")
+  knitr::include_graphics(path=filename, dpi=dpi)
+}
+```
+
+# Introduction
+
+Below is a simple causal diagram (`IV --> DV`) that will be included as vector
+graphics (PDF) with a caption using `fig.cap` option.
+
+You can control the width and height with `fig.width` and `fig.height` as well.
+
+```{r diagram, fig.cap="Our first diagram.", fig.width=1, fig.height=1}
+code <- "
+  digraph causal {
+	# Nodes
+	node [shape = reactangle, fontname = Arial]
+	iv [label = 'Independent\nvariable']
+	dv  [label = 'Dependent\nvariable']
+
+	# Edges
+	edge [color = black, arrowhead = normal]
+	rankdir = LR
+	iv -> dv
+
+	# Graph
+	graph [overlap = true, fontsize = 10]
+}"
+
+create_pdf_diagram("diagram.pdf", code)
+```
