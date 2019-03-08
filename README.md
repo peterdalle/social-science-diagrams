@@ -4,6 +4,13 @@ The [DiagrammeR package](http://rich-iannone.github.io/DiagrammeR/) is great for
 
 However, it can be challenging to figure out how to create common graphs using GraphViz. Therefore, I compiled a list of some common graphs and plots to get you started.
 
+## Concepts
+
+Display hierarchies and relationships between theoretical constructs.
+
+[![](concepts/concept-relationships.png)](concepts/concept-relationships.r)   
+[Hierarchy of concepts](concepts/concept-relationships.r)
+
 ## Experiments
 
 Randomization procedure.
